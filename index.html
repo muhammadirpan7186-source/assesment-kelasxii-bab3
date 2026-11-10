@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asesmen - BAB III - Informatika</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* CSS Variables untuk Tema */
+        :root {
+            --primary: #F4BAA3; /* Peach */
+            --secondary: #F4F0E2; /* Cream */
+            --accent: #A6C8E2; /* Biru Muda */
+            --text-dark: #333333;
+            --text-light: #ffffff;
+            --bg-body: #fdfdfd;
+            --card-bg: #ffffff;
+            --cert-tosca: #16a085;
+            --cert-blue: #2c3e50;
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        /* Tema Gelap / Dark Mode */
+        body.dark-mode {
+            --primary: #d98f73;
+            --secondary: #2c2c2c;
+            --accent: #5b8ba8;
+            --text-dark: #f8f9fa;
+            --bg-body: #1a1a24;
+            --card-bg: #2a2a35;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-dark);
+            transition: var(--transition);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Tampilan Canva-like */
+        .card-custom {
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            border: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            transition: var(--transition);
+            overflow: hidden;
+        }
+
+        .card-custom:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.12);
+        }
+
+        .btn-primary-custom {
+            background-color: var(--primary);
+            color: var(--text-dark);
+            font-weight: 600;
+            border: none;
+            border-radius: 50px;
+            padding: 10px 25px;
+            transition: var(--transition);
+        }
+
+        .btn-primary-custom:hover {
+            background-color: #e5a78f;
+            transform: scale(1.05);
+        }
+
+        .btn-accent-custom {
+            background-color: var(--accent);
+            color: var(--text-dark);
+            font-weight: 600;
+            border: none;
+            border-radius: 50px;
+            padding: 10px 25px;
+            transition: var(--transition);
+        }
+
+        .btn-accent-custom:hover {
+            background-color: #92b8d4;
+            transform: scale(1.05);
+        }
+
+        .header-bg {
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            border-bottom-left-radius: 30px;
+            border-bottom-right-radius: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        /* Grid Navigasi Soal */
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+            gap: 8px;
+        }
+        
+        .nav-item-btn {
+            width: 100%;
+            aspect-ratio: 1/1;
+            border-radius: 10px;
+            border: 2px solid var(--accent);
+            background-color: var(--card-bg);
+            color: var(--text-dark);
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .nav-item-btn.answered {
+            background-color: var(--primary);
+            border-color: var(--primary);
+            color: #333;
+        }
+
+        .nav-item-btn.active {
+            background-color: var(--accent);
+            color: #333;
+            transform: scale(1.1);
+            box-shadow: 0 0 10px rgba(166, 200, 226, 0.8);
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            height: 12px;
+            background-color: var(--secondary);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        .progress-bar-fill {
+            height: 100%;
+            background-color: var(--primary);
+            width: 0%;
+            transition: width 0.4s ease;
+        }
+
+        /* Sertifikat Style */
+        #sertifikat-container {
+            background: linear-gradient(135deg, var(--cert-tosca), var(--cert-blue));
+            padding: 40px;
+            border-radius: 20px;
+            color: white;
+            position: relative;
+            text-align: center;
+            border: 8px solid #f1c40f;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            margin: 20px auto;
+            max-width: 800px;
+        }
+
+        .cert-title { font-size: 2.5rem; font-weight: 700; margin-bottom: 10px; letter-spacing: 2px; }
+        .cert-subtitle { font-size: 1.2rem; font-weight: 300; margin-bottom: 30px; }
+        .cert-name { font-size: 3rem; font-weight: 700; color: #f1c40f; margin: 20px 0; font-family: 'Georgia', serif; font-style: italic;}
+        .cert-details { font-size: 1.2rem; margin-bottom: 30px; }
+        .cert-score { font-size: 4rem; font-weight: bold; text-shadow: 2px 2px 5px rgba(0,0,0,0.5); }
+        .cert-footer { display: flex; justify-content: space-between; align-items: flex-end; margin-top: 50px; text-align: left; }
+        
+        .badge-predikat {
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(5px);
+        }
+
+        /* Print Specifics */
+        @media print {
+            body * { visibility: hidden; }
+            #section-sertifikat, #section-sertifikat * { visibility: visible; }
+            #section-sertifikat { position: absolute; left: 0; top: 0; width: 100%; height: 100%; margin: 0; padding: 0; }
+            .no-print { display: none !important; }
+            body { background: white !important; }
+        }
+
+        .section-hidden { display: none !important; }
+        
+        /* Floating animations */
+        .float-anim {
+            animation: float 3s ease-in-out infinite;
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        /* Custom Input styling */
+        .form-control-custom, .form-select-custom {
+            background-color: var(--bg-body);
+            border: 2px solid var(--accent);
+            color: var(--text-dark);
+            border-radius: 12px;
+            padding: 12px;
+        }
+        .form-control-custom:focus {
+            box-shadow: 0 0 0 0.25rem rgba(166, 200, 226, 0.5);
+            border-color: var(--primary);
+            outline: none;
+        }
+
+        /* Matching Dropdown styling */
+        .matching-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            gap: 15px;
+            background: var(--bg-body);
+            padding: 15px;
+            border-radius: 15px;
+            border: 1px solid var(--accent);
+        }
+        .matching-label { flex: 1; font-weight: 500; }
+        .matching-select { flex: 1; }
+
+    </style>
+</head>
+<body>
+
+    <!-- Top Header -->
+    <header class="header-bg py-3 px-4 d-flex justify-content-between align-items-center no-print sticky-top">
+        <div class="d-flex align-items-center gap-2">
+            <i class="fas fa-laptop-code fs-3" style="color: var(--text-dark);"></i>
+            <h4 class="m-0 fw-bold" style="color: var(--text-dark); font-size: 1.2rem;">ASESMEN BAB III - KELAS XII RASUNA SAID</h4>
+        </div>
+        <div class="d-flex align-items-center gap-3">
+            <div id="timer-display" class="fw-bold section-hidden px-3 py-1 rounded-pill" style="background-color: var(--card-bg); color: #e74c3c;">
+                <i class="fas fa-clock me-1"></i> <span id="time-text">90:00</span>
+            </div>
+            <button class="btn btn-sm btn-outline-dark rounded-circle" id="btn-theme" title="Toggle Dark Mode">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="container py-4 flex-grow-1">
+        
+        <!-- SECTION: LOGIN -->
+        <section id="section-login" class="row justify-content-center align-items-center min-vh-50">
+            <div class="col-md-6 col-lg-5">
+                <div class="card-custom p-5 text-center">
+                    <img src="SMA.png" alt="Logo" class="rounded-circle mb-4 float-anim" width="120">
+                    <h3 class="fw-bold mb-1">Selamat Siang, Santri Soleh/Solehah!</h3>
+                    <p class="text-muted mb-4">Silakan isi identitas dulu sebelum memulai asesmen.</p>
+                    
+                    <form id="form-login" onsubmit="masukAplikasi(event)">
+                        <div class="mb-3 text-start">
+                            <label class="fw-bold mb-2">Nama Lengkap</label>
+                            <input type="text" id="input-nama" class="form-control form-control-custom w-100" placeholder="Masukkan nama..." required>
+                        </div>
+                        <div class="mb-4 text-start">
+                            <label class="fw-bold mb-2">Kelas</label>
+                            <select id="input-kelas" class="form-select form-control-custom w-100" required>
+                                <option value="" disabled selected>Pilih Kelas...</option>
+                                <option value="XII Rasuna Said">XII Rasuna Said</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn-primary-custom w-100 fs-5"><i class="fas fa-rocket me-2"></i>Saya Siap Ujian</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION: MENU UTAMA -->
+        <section id="section-menu" class="section-hidden">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h2 class="fw-bold">Menu Utama</h2>
+                    <p class="mb-0">Selamat datang, <span id="display-nama" class="fw-bold text-primary"></span>!</p>
+                </div>
+                <button class="btn btn-danger rounded-pill px-4" onclick="konfirmasiSelesai()"><i class="fas fa-flag-checkered me-2"></i>Selesai Ujian</button>
+            </div>
+
+            <div class="row g-4">
+                <!-- Apersepsi -->
+                <div class="col-md-4">
+                    <div class="card-custom p-4 text-center h-100" style="cursor:pointer;" onclick="bukaApersepsi()">
+                        <i class="fas fa-book-open fs-1 mb-3" style="color: var(--accent)"></i>
+                        <h4>Apersepsi & Panduan</h4>
+                        <p class="text-muted small">Baca petunjuk ujian agar lancar.</p>
+                    </div>
+                </div>
+                <!-- PG -->
+                <div class="col-md-4">
+                    <div class="card-custom p-4 text-center h-100" style="cursor:pointer;" onclick="lompatKeKategori('pg')">
+                        <i class="fas fa-list-ul fs-1 mb-3" style="color: var(--primary)"></i>
+                        <h4>Pilihan Ganda</h4>
+                        <p class="text-muted small">20 Soal (Pilih satu jawaban benar)</p>
+                    </div>
+                </div>
+                <!-- PG Kompleks -->
+                <div class="col-md-4">
+                    <div class="card-custom p-4 text-center h-100" style="cursor:pointer;" onclick="lompatKeKategori('pgk')">
+                        <i class="fas fa-check-double fs-1 mb-3" style="color: var(--accent)"></i>
+                        <h4>Pilihan Ganda Kompleks</h4>
+                        <p class="text-muted small">5 Soal (Pilih lebih dari satu)</p>
+                    </div>
+                </div>
+                <!-- Menjodohkan -->
+                <div class="col-md-4">
+                    <div class="card-custom p-4 text-center h-100" style="cursor:pointer;" onclick="lompatKeKategori('jodoh')">
+                        <i class="fas fa-random fs-1 mb-3" style="color: var(--primary)"></i>
+                        <h4>Menjodohkan</h4>
+                        <p class="text-muted small">5 Soal (Cocokkan pasangan)</p>
+                    </div>
+                </div>
+                <!-- Isian Singkat -->
+                <div class="col-md-4">
+                    <div class="card-custom p-4 text-center h-100" style="cursor:pointer;" onclick="lompatKeKategori('isian')">
+                        <i class="fas fa-pen fs-1 mb-3" style="color: var(--accent)"></i>
+                        <h4>Isian Singkat</h4>
+                        <p class="text-muted small">10 Soal (Ketik jawaban singkat)</p>
+                    </div>
+                </div>
+                <!-- Uraian -->
+                <div class="col-md-4">
+                    <div class="card-custom p-4 text-center h-100" style="cursor:pointer;" onclick="lompatKeKategori('uraian')">
+                        <i class="fas fa-edit fs-1 mb-3" style="color: var(--primary)"></i>
+                        <h4>Uraian (HOTS)</h4>
+                        <p class="text-muted small">5 Soal (Analisis & Pendapat)</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Progress dan Lanjut ngerjain -->
+            <div class="card-custom p-4 mt-4 text-center bg-light">
+                <p class="fw-bold mb-2">Progress Pengerjaan: <span id="progress-text-menu">0</span>%</p>
+                <div class="progress-container mx-auto" style="max-width: 500px;">
+                    <div class="progress-bar-fill" id="progress-bar-menu"></div>
+                </div>
+                <button class="btn-primary-custom px-5 mt-3" onclick="lanjutKerjakan()">Lanjut Mengerjakan <i class="fas fa-arrow-right ms-2"></i></button>
+            </div>
+        </section>
+
+        <!-- SECTION: APERSEPSI -->
+        <section id="section-apersepsi" class="section-hidden">
+            <button class="btn btn-outline-secondary mb-3 rounded-pill" onclick="kembaliKeMenu()"><i class="fas fa-arrow-left me-2"></i>Kembali ke Menu</button>
+            <div class="card-custom p-5">
+                <div class="text-center mb-4">
+                    <h2 class="fw-bold">Apersepsi & Panduan Ulangan</h2>
+                    <img src="https://placehold.co/400x200/A6C8E2/333?text=Sukses+Ujian!" alt="Motivasi" class="img-fluid rounded-4 mt-3">
+                </div>
+                <div class="content lh-lg">
+                    <h4>🎯 Tujuan Pembelajaran</h4>
+                    <p>Ujian ini bertujuan untuk memperdalam pemahaman kamu tentang Perencanaan dan Pengembangan Sistem Komputer, meliputi Hardware, Software, dan metode SDLC (Waterfall, Agile, Scrum, Spiral, DevOps).</p>
+                    
+                    <h4>💡 Petunjuk Mengerjakan</h4>
+                    <ul>
+                        <li>Waktu pengerjaan adalah <b>90 Menit</b>. Waktu terus berjalan saat kamu mulai mengerjakan soal.</li>
+                        <li>Terdapat 5 jenis soal: Pilihan Ganda (20), PG Kompleks (5), Menjodohkan (5), Isian Singkat (10), dan Uraian (5).</li>
+                        <li>Gunakan menu atau tombol navigasi angka untuk melompat ke soal tertentu.</li>
+                        <li>Jika waktu habis, ujian akan otomatis diakhiri.</li>
+                        <li>Pastikan kamu mengklik tombol <b>Selesai Ujian</b> di Menu Utama jika sudah yakin dengan semua jawaban.</li>
+                    </ul>
+
+                    <div class="alert alert-info border-0 rounded-4 shadow-sm" style="background-color: var(--secondary); color: var(--text-dark);">
+                        <i class="fas fa-quote-left fs-3 mb-2" style="color: var(--primary);"></i><br>
+                        <i>"Pendidikan adalah senjata paling mematikan di dunia, karena dengan pendidikan, Anda dapat mengubah dunia." - Nelson Mandela. Kerjakan dengan jujur dan penuh semangat!</i>
+                    </div>
+                </div>
+                <div class="text-center mt-4">
+                    <button class="btn-primary-custom px-5" onclick="lanjutKerjakan()">Mulai Mengerjakan <i class="fas fa-play ms-2"></i></button>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION: KUIS / SOAL -->
+        <section id="section-quiz" class="section-hidden">
+            <div class="row">
+                <!-- Sidebar Grid Soal -->
+                <div class="col-lg-3 order-2 order-lg-1 mb-4">
+                    <div class="card-custom p-3 sticky-top" style="top: 80px;">
+                        <button class="btn btn-outline-secondary w-100 mb-3 rounded-pill" onclick="kembaliKeMenu()">
+                            <i class="fas fa-home me-2"></i>Menu Utama
+                        </button>
+                        <h6 class="fw-bold mb-3 text-center">Navigasi Soal</h6>
+                        <div class="nav-grid mb-3" id="nav-grid-container">
+                            <!-- Tombol grid akan di-generate via JS -->
+                        </div>
+                        <div class="d-flex justify-content-between small text-muted px-2 mt-2">
+                            <span><i class="fas fa-square text-secondary"></i> Kosong</span>
+                            <span><i class="fas fa-square" style="color:var(--primary)"></i> Terisi</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Konten Soal -->
+                <div class="col-lg-9 order-1 order-lg-2 mb-4">
+                    <div class="card-custom p-4 p-md-5 min-vh-50 d-flex flex-column">
+                        <div class="d-flex justify-content-between align-items-center mb-3 border-bottom pb-2">
+                            <span class="badge" style="background-color: var(--accent); color: #333; font-size: 1rem;" id="tipe-soal-badge">Pilihan Ganda</span>
+                            <span class="fw-bold text-muted">Soal <span id="nomor-soal-teks">1</span>/45</span>
+                        </div>
+
+                        <!-- Progress Bar dalam quiz -->
+                        <div class="progress-container mb-4">
+                            <div class="progress-bar-fill" id="progress-bar-quiz"></div>
+                        </div>
+
+                        <!-- Tempat Soal -->
+                        <div id="pertanyaan-container" class="flex-grow-1 fs-5 mb-4">
+                            <!-- Pertanyaan diisi JS -->
+                        </div>
+                        
+                        <!-- Tempat Jawaban -->
+                        <div id="jawaban-container" class="mb-5">
+                            <!-- Pilihan Jawaban diisi JS -->
+                        </div>
+
+                        <!-- Navigasi Bawah -->
+                        <div class="d-flex justify-content-between mt-auto pt-3 border-top">
+                            <button class="btn btn-secondary rounded-pill px-4" id="btn-prev" onclick="navigasiSoal(-1)"><i class="fas fa-chevron-left me-2"></i>Sebelumnya</button>
+                            <button class="btn-primary-custom px-4" id="btn-next" onclick="navigasiSoal(1)">Selanjutnya <i class="fas fa-chevron-right ms-2"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION: HASIL & SERTIFIKAT -->
+        <section id="section-sertifikat" class="section-hidden">
+            <div class="text-center no-print mb-4">
+                <h2 class="fw-bold">Asesmen Selesai!</h2>
+                <p>Selamat kamu telah menyelesaikan ujian. Berikut adalah hasil dan sertifikat apresiasimu.</p>
+                <div class="d-flex justify-content-center gap-3 mt-3">
+                    <button class="btn btn-outline-primary rounded-pill px-4" onclick="downloadRekap()"><i class="fas fa-download me-2"></i>Download Rekap Jawaban</button>
+                    <button class="btn-primary-custom px-4" onclick="window.print()"><i class="fas fa-print me-2"></i>Cetak Sertifikat</button>
+                </div>
+            </div>
+
+            <!-- Kartu Sertifikat yang akan diprint -->
+            <div id="sertifikat-container">
+                <div style="position: absolute; top: 20px; left: 20px; font-size: 3rem; opacity: 0.2;"><i class="fas fa-award"></i></div>
+                <div style="position: absolute; bottom: 20px; right: 20px; font-size: 5rem; opacity: 0.1;"><i class="fas fa-laptop-code"></i></div>
+                
+                <h1 class="cert-title">SERTIFIKAT PENGHARGAAN</h1>
+                <h3 class="cert-subtitle">Diberikan oleh: SMA KHALIFAH BOARDING SCHOOL</h3>
+                
+                <p class="mt-4 mb-0">Diberikan Kepada:</p>
+                <h2 class="cert-name" id="cert-nama">NAMA SISWA</h2>
+                
+                <div class="cert-details">
+                    <p class="mb-1">Kelas: <b><span id="cert-kelas">XII Rasuna Said</span></b></p>
+                    <p class="mb-3">Telah menyelesaikan Asesmen Materi:<br><b>Perencanaan dan Pengembangan Sistem Komputer</b></p>
+                </div>
+
+                <div class="mb-4">
+                    <p class="mb-1">Dengan Nilai Akhir:</p>
+                    <div class="cert-score" id="cert-nilai">100</div>
+                    <div class="badge-predikat mt-2" id="cert-predikat">SANGAT BAIK</div>
+                </div>
+
+                <div class="cert-footer">
+                    <div>
+                        <p class="mb-0 small">Tanggal Ujian:</p>
+                        <p class="fw-bold" id="cert-tanggal">10 Oktober 2026</p>
+                    </div>
+                    <div class="text-center">
+                        <p class="mb-1 small">Guru Pengampu Informatika,</p>
+                        <div style="height: 60px; display: flex; align-items: center; justify-content: center;">
+                            <span style="font-family: 'Brush Script MT', cursive; font-size: 2rem; transform: rotate(-10deg);">M. Irpan</span>
+                        </div>
+                        <p class="fw-bold mb-0 border-top pt-1 border-white">Muhammad Irpan, S.Kom</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center no-print mt-5">
+                <button class="btn btn-outline-danger rounded-pill px-4" onclick="location.reload()"><i class="fas fa-redo me-2"></i>Ulangi Aplikasi (Reset)</button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-3 text-center no-print mt-auto" style="background-color: rgba(0,0,0,0.02);">
+        <p class="mb-0 small text-muted">&copy; <span id="year">2026</span> MPI Asesmen - SMA KHALIFAH BOARDING SCHOOL oleh Muhammad Irpan, S.Kom.</p>
+    </footer>
+
+    <!-- Custom Modal for Alerts (Pengganti alert() bawaan) -->
+    <div class="modal fade" id="customModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="border-radius: 20px; border: none; overflow:hidden;">
+          <div class="modal-header border-0" id="modal-header-bg" style="background-color: var(--primary);">
+            <h5 class="modal-title fw-bold" id="customModalTitle">Pemberitahuan</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body p-4 text-center fs-5" id="customModalBody">
+            <!-- Pesan masuk sini -->
+          </div>
+          <div class="modal-footer border-0 justify-content-center pb-4" id="customModalFooter">
+            <button type="button" class="btn-primary-custom px-4" data-bs-dismiss="modal" id="modal-btn-ok">Mengerti</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap & FontAwesome JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- App Script -->
+    <script>
+        // Set tahun di footer
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // ------------------ DATA SOAL ------------------
+        // Struktur: 20 PG, 5 PGK, 5 Menjodohkan, 10 Isian, 5 Uraian = Total 45.
+        // Untuk optimalisasi ukuran file, saya sediakan data lengkap sesuai kaidah.
+        
+        const dataSoal = [];
+        let idCounter = 1;
+
+        // --- 1. Pilihan Ganda (1-20) ---
+        const soalPG = [
+            {q: "Model pengembangan perangkat lunak yang pendekatannya bersifat linier dan sekuensial adalah...", o: ["Agile", "Scrum", "Waterfall", "DevOps", "Spiral"], a: "Waterfall"},
+            {q: "Perangkat keras yang bertugas sebagai otak dari komputer dan memproses semua instruksi adalah...", o: ["RAM", "Harddisk", "Motherboard", "CPU", "VGA"], a: "CPU"},
+            {q: "RAM (Random Access Memory) merupakan memori komputer yang bersifat...", o: ["Non-volatile (permanen)", "Volatile (hilang saat mati)", "Read-only", "Sekunder", "Terkunci"], a: "Volatile (hilang saat mati)"},
+            {q: "Sistem operasi termasuk dalam kategori perangkat lunak...", o: ["Aplikasi", "Sistem", "Utility", "Pemrograman", "Malware"], a: "Sistem"},
+            {q: "Mana yang BUKAN merupakan framework dari metode Agile?", o: ["Scrum", "Kanban", "XP (Extreme Programming)", "Waterfall", "Crystal"], a: "Waterfall"},
+            {q: "Fase pertama dalam SDLC (Software Development Life Cycle) adalah...", o: ["Design", "Testing", "Planning/Requirement", "Deployment", "Maintenance"], a: "Planning/Requirement"},
+            {q: "Manakah perangkat output di bawah ini?", o: ["Keyboard", "Mouse", "Microphone", "Monitor", "Scanner"], a: "Monitor"},
+            {q: "Peran dalam Scrum yang bertugas memaksimalkan nilai produk dan mengelola Product Backlog adalah...", o: ["Scrum Master", "Development Team", "Product Owner", "Project Manager", "Stakeholder"], a: "Product Owner"},
+            {q: "Integrasi berkesinambungan dan pengiriman berkesinambungan (CI/CD) adalah praktik utama dari...", o: ["Waterfall", "Spiral", "DevOps", "RAD", "V-Model"], a: "DevOps"},
+            {q: "Model SDLC yang sangat menekankan pada analisis risiko di setiap iterasinya adalah model...", o: ["Waterfall", "Agile", "Scrum", "Spiral", "Prototyping"], a: "Spiral"},
+            {q: "Perangkat lunak open-source artinya...", o: ["Harus dibeli dengan lisensi mahal", "Kode sumbernya terbuka dan bebas dimodifikasi", "Hanya berjalan di sistem operasi Linux", "Tidak memiliki antarmuka grafis", "Rentan terhadap virus komputer"], a: "Kode sumbernya terbuka dan bebas dimodifikasi"},
+            {q: "Periode waktu tetap (biasanya 1-4 minggu) dalam Scrum untuk menyelesaikan sejumlah pekerjaan disebut...", o: ["Sprint", "Daily Standup", "Retrospective", "Review", "Backlog"], a: "Sprint"},
+            {q: "SSD (Solid State Drive) lebih cepat dari HDD karena...", o: ["Menggunakan piringan magnetik yang berputar cepat", "Ukurannya lebih besar secara fisik", "Menggunakan memori flash tanpa komponen bergerak", "Harganya lebih mahal", "Disambungkan ke port USB"], a: "Menggunakan memori flash tanpa komponen bergerak"},
+            {q: "Tahapan SDLC di mana kode program mulai ditulis oleh programmer adalah...", o: ["Requirement Analysis", "Design", "Implementation/Coding", "Testing", "Maintenance"], a: "Implementation/Coding"},
+            {q: "Pengujian perangkat lunak tanpa melihat struktur internal atau kode program disebut...", o: ["White-box testing", "Black-box testing", "Unit testing", "Integration testing", "System architecture"], a: "Black-box testing"},
+            {q: "Perangkat lunak yang dirancang khusus untuk merusak sistem komputer disebut...", o: ["Freeware", "Shareware", "Malware", "Firmware", "Utility"], a: "Malware"},
+            {q: "Siklus hidup perangkat lunak (SDLC) bertujuan untuk...", o: ["Menghasilkan perangkat lunak berkualitas tinggi dengan biaya murah dan waktu singkat", "Membuat hardware komputer yang lebih cepat", "Meningkatkan kecepatan internet pengguna", "Menjual software bajakan", "Mempelajari bahasa pemrograman baru"], a: "Menghasilkan perangkat lunak berkualitas tinggi dengan biaya murah dan waktu singkat"},
+            {q: "Kelemahan utama model Waterfall adalah...", o: ["Prosesnya sangat acak", "Sangat fleksibel terhadap perubahan", "Sulit mengakomodasi perubahan kebutuhan di tengah proses", "Tidak butuh dokumentasi", "Hanya cocok untuk tim besar"], a: "Sulit mengakomodasi perubahan kebutuhan di tengah proses"},
+            {q: "Pertemuan harian singkat (15 menit) dalam Scrum disebut...", o: ["Sprint Planning", "Daily Scrum / Standup", "Sprint Review", "Sprint Retrospective", "Product Backlog Refinement"], a: "Daily Scrum / Standup"},
+            {q: "Sebuah budaya kerja dan praktik rekayasa perangkat lunak yang menyatukan pengembangan (Dev) dan operasi perangkat lunak (Ops) adalah definisi dari...", o: ["Waterfall", "DevOps", "Spiral", "Agile", "Scrum"], a: "DevOps"}
+        ];
+        soalPG.forEach(s => dataSoal.push({ id: idCounter++, type: 'pg', kategori: 'pg', q: s.q, options: s.o, answer: s.a }));
+
+        // --- 2. PG Kompleks (21-25) ---
+        const soalPGK = [
+            {q: "Pilih 2 metodologi yang termasuk dalam rumpun Agile!", o: ["Scrum", "Waterfall", "Kanban", "Spiral"], a: ["Scrum", "Kanban"]},
+            {q: "Manakah yang termasuk Perangkat Keras Input (Input Device)?", o: ["Monitor", "Keyboard", "Mouse", "Printer"], a: ["Keyboard", "Mouse"]},
+            {q: "Tahapan yang PASTI ADA dalam setiap siklus pengembangan perangkat lunak (SDLC) adalah...", o: ["Analisis Kebutuhan", "Pengujian (Testing)", "Manufaktur Hardware", "Pemasaran (Marketing)"], a: ["Analisis Kebutuhan", "Pengujian (Testing)"]},
+            {q: "Yang merupakan sistem operasi komputer (OS) desktop adalah...", o: ["Microsoft Word", "Windows 11", "Linux Ubuntu", "Google Chrome"], a: ["Windows 11", "Linux Ubuntu"]},
+            {q: "Praktik-praktik utama yang umum dalam kultur DevOps adalah...", o: ["Continuous Integration (CI)", "Pemisahan ketat tim Dev dan Ops", "Continuous Delivery (CD)", "Penulisan kode secara manual tanpa alat bantu"], a: ["Continuous Integration (CI)", "Continuous Delivery (CD)"]}
+        ];
+        soalPGK.forEach(s => dataSoal.push({ id: idCounter++, type: 'pgk', kategori: 'pgk', q: s.q, options: s.o, answer: s.a }));
+
+        // --- 3. Menjodohkan (26-30) ---
+        // Format: q = instruksi, items = array dari pasangan {left, right}
+        const soalJodoh = [
+            {q: "Cocokkan nama komponen dengan fungsinya!", items: [{l: "CPU", r: "Otak komputer pemroses data"}, {l: "RAM", r: "Memori sementara"}, {l: "Harddisk", r: "Penyimpanan permanen"}]},
+            {q: "Cocokkan model SDLC dengan karakteristiknya!", items: [{l: "Waterfall", r: "Sangat berurutan, tidak bisa mundur"}, {l: "Agile", r: "Iteratif, fleksibel, responsif"}, {l: "Spiral", r: "Fokus utama pada analisis risiko"}]},
+            {q: "Cocokkan peran Scrum dengan tugasnya!", items: [{l: "Product Owner", r: "Memaksimalkan nilai produk"}, {l: "Scrum Master", r: "Memastikan proses Scrum berjalan"}, {l: "Dev Team", r: "Mengerjakan/mengeksekusi tugas"}]},
+            {q: "Cocokkan jenis perangkat lunak dengan contohnya!", items: [{l: "Sistem Operasi", r: "Windows, Linux, macOS"}, {l: "Aplikasi Perkantoran", r: "Microsoft Office, LibreOffice"}, {l: "Browser Web", r: "Chrome, Firefox, Safari"}]},
+            {q: "Cocokkan istilah DevOps dengan maknanya!", items: [{l: "Continuous Integration", r: "Otomasi penggabungan kode"}, {l: "Continuous Delivery", r: "Siap dirilis kapan saja"}, {l: "Infrastructure as Code", r: "Mengelola server via skrip"}]}
+        ];
+        soalJodoh.forEach(s => {
+            // acak right options untuk dropdown
+            let rightOptions = s.items.map(i => i.r).sort(() => Math.random() - 0.5);
+            dataSoal.push({ id: idCounter++, type: 'jodoh', kategori: 'jodoh', q: s.q, items: s.items, rightOptions: rightOptions });
+        });
+
+        // --- 4. Isian Singkat (31-40) ---
+        const soalIsian = [
+            {q: "Singkatan dari Central Processing Unit adalah...", a: "CPU"},
+            {q: "Siklus hidup pengembangan perangkat lunak (bahasa Inggris) disingkat...", a: "SDLC"},
+            {q: "Metodologi pengembangan yang membagi pekerjaan dalam siklus waktu pendek yang disebut 'Sprint' adalah...", a: "Scrum"},
+            {q: "Random Access Memory disingkat...", a: "RAM"},
+            {q: "Sistem operasi yang berlogo Jendela dan dibuat oleh Microsoft adalah...", a: "Windows"},
+            {q: "Metode SDLC tertua dan paling sederhana yang mengalir ke bawah seperti air terjun disebut...", a: "Waterfall"},
+            {q: "Tahap dalam SDLC dimana aplikasi diperiksa dan dicari kutu (bug)-nya disebut tahap...", a: "Testing"},
+            {q: "Metodologi yang menitikberatkan pada kolaborasi antara pengembang (Development) dan operasional IT (Operations) adalah...", a: "DevOps"},
+            {q: "Bagian dari komputer yang berfungsi mencetak dokumen ke atas kertas disebut...", a: "Printer"},
+            {q: "Program komputer yang bertindak sebagai antarmuka antara pengguna, perangkat lunak aplikasi, dan perangkat keras komputer disebut Sistem...", a: "Operasi"}
+        ];
+        soalIsian.forEach(s => dataSoal.push({ id: idCounter++, type: 'isian', kategori: 'isian', q: s.q, answer: s.a.toLowerCase() }));
+
+        // --- 5. Uraian (41-45) ---
+        const soalUraian = [
+            {q: "Menurut pendapatmu, mengapa metodologi Agile lebih banyak digunakan pada startup dan perusahaan teknologi modern dibandingkan model Waterfall? Jelaskan analisis tingkat tinggimu!"},
+            {q: "Sebuah perusahaan ingin membangun sistem e-commerce dari nol. Jelaskan tahap 'Perencanaan/Analisis Kebutuhan' (Requirement Analysis) yang harus mereka lakukan!"},
+            {q: "Jelaskan secara rinci bagaimana CPU, RAM, dan Harddisk (Storage) saling bekerja sama ketika kamu membuka sebuah aplikasi (misalnya Microsoft Word) di komputermu!"},
+            {q: "Apa keuntungan menerapkan budaya DevOps dalam siklus hidup pengembangan perangkat lunak? Berikan 2 alasan spesifik."},
+            {q: "Dalam framework Scrum, terdapat beberapa event (seperti Sprint Planning, Daily Scrum, Sprint Review, Sprint Retrospective). Pilih salah satu event tersebut dan jelaskan fungsinya secara mendalam!"}
+        ];
+        soalUraian.forEach(s => dataSoal.push({ id: idCounter++, type: 'uraian', kategori: 'uraian', q: s.q }));
+
+        const totalSoal = dataSoal.length; // 45
+
+        // ------------------ VARIABEL STATE ------------------
+        let userData = { nama: "", kelas: "" };
+        let answers = {}; // object untuk simpan jawaban: keys=index soal (0-44)
+        let currentIndex = 0;
+        let timerInterval;
+        let timeLeft = 90 * 60; // 90 menit dalam detik
+        let isExamActive = false;
+
+        // Inisialisasi awal
+        document.addEventListener('DOMContentLoaded', () => {
+            initDarkModeToggle();
+            // Modal bootstrap instance
+            window.customModalObj = new bootstrap.Modal(document.getElementById('customModal'));
+        });
+
+        // ------------------ FUNGSI UTAMA ------------------
+
+        function showCustomAlert(title, message, isConfirm = false, onConfirm = null) {
+            document.getElementById('customModalTitle').textContent = title;
+            document.getElementById('customModalBody').innerHTML = message;
+            const footer = document.getElementById('customModalFooter');
+            
+            if(isConfirm) {
+                footer.innerHTML = `
+                    <button type="button" class="btn btn-secondary rounded-pill px-4" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn-primary-custom px-4" id="modal-btn-confirm">Ya, Lanjutkan</button>
+                `;
+                document.getElementById('modal-btn-confirm').onclick = () => {
+                    window.customModalObj.hide();
+                    if(onConfirm) onConfirm();
+                };
+            } else {
+                footer.innerHTML = `<button type="button" class="btn-primary-custom px-4" data-bs-dismiss="modal">Mengerti</button>`;
+            }
+            window.customModalObj.show();
+        }
+
+        function initDarkModeToggle() {
+            const btn = document.getElementById('btn-theme');
+            btn.addEventListener('click', () => {
+                document.body.classList.toggle('dark-mode');
+                const isDark = document.body.classList.contains('dark-mode');
+                btn.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+            });
+        }
+
+        function switchSection(sectionId) {
+            const sections = ['section-login', 'section-menu', 'section-apersepsi', 'section-quiz', 'section-sertifikat'];
+            sections.forEach(id => {
+                const el = document.getElementById(id);
+                if (id === sectionId) {
+                    el.classList.remove('section-hidden');
+                    // Tambahkan animasi fade in tipis
+                    el.style.opacity = 0;
+                    setTimeout(() => { el.style.transition = 'opacity 0.5s'; el.style.opacity = 1; }, 50);
+                } else {
+                    el.classList.add('section-hidden');
+                }
+            });
+        }
+
+        function masukAplikasi(e) {
+            e.preventDefault();
+            const nama = document.getElementById('input-nama').value.trim();
+            const kelas = document.getElementById('input-kelas').value;
+            
+            if(!nama || !kelas) {
+                showCustomAlert("Peringatan", "Harap isi nama dan pilih kelas!");
+                return;
+            }
+
+            userData.nama = nama;
+            userData.kelas = kelas;
+            document.getElementById('display-nama').textContent = nama;
+            
+            // Inisialisasi tracker
+            updateGlobalProgress();
+            
+            switchSection('section-menu');
+        }
+
+        function bukaApersepsi() {
+            switchSection('section-apersepsi');
+        }
+
+        function kembaliKeMenu() {
+            updateGlobalProgress();
+            switchSection('section-menu');
+        }
+
+        function mulaiTimer() {
+            if(isExamActive) return; // jgn panggil dobel
+            isExamActive = true;
+            document.getElementById('timer-display').classList.remove('section-hidden');
+            
+            timerInterval = setInterval(() => {
+                if(timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    showCustomAlert("Waktu Habis", "Waktu pengerjaan telah habis. Ujian otomatis diakhiri.");
+                    selesaikanUjian();
+                    return;
+                }
+                timeLeft--;
+                
+                let m = Math.floor(timeLeft / 60);
+                let s = timeLeft % 60;
+                document.getElementById('time-text').textContent = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+                
+                if(timeLeft < 300) { // < 5 menit, teks merah kedip
+                    document.getElementById('time-text').style.animation = 'float 1s infinite';
+                }
+            }, 1000);
+        }
+
+        function lanjutKerjakan() {
+            mulaiTimer(); // pastikan timer jalan
+            bukaSoal(currentIndex);
+        }
+
+        function lompatKeKategori(kategori) {
+            mulaiTimer();
+            // cari index soal pertama untuk kategori tersebut
+            const idx = dataSoal.findIndex(s => s.kategori === kategori);
+            if(idx !== -1) {
+                bukaSoal(idx);
+            } else {
+                bukaSoal(0);
+            }
+        }
+
+        function bukaSoal(index) {
+            currentIndex = index;
+            switchSection('section-quiz');
+            renderGrid();
+            renderPertanyaan();
+            updateQuizUI();
+        }
+
+        function renderGrid() {
+            const container = document.getElementById('nav-grid-container');
+            container.innerHTML = '';
+            for(let i=0; i<totalSoal; i++) {
+                const btn = document.createElement('div');
+                btn.className = 'nav-item-btn';
+                btn.textContent = i + 1;
+                
+                // Status terisi
+                if(answers[i] !== undefined && answers[i] !== '' && (Array.isArray(answers[i]) ? answers[i].length > 0 : true)) {
+                    // khusus menjodohkan
+                    if(dataSoal[i].type === 'jodoh') {
+                         let isFull = true;
+                         for(let j=0; j<dataSoal[i].items.length; j++) {
+                             if(!answers[i][j]) isFull = false;
+                         }
+                         if(isFull) btn.classList.add('answered');
+                    } else {
+                         btn.classList.add('answered');
+                    }
+                }
+                
+                // Status aktif
+                if(i === currentIndex) {
+                    btn.classList.add('active');
+                }
+                
+                btn.onclick = () => {
+                    simpanJawabanSementara();
+                    currentIndex = i;
+                    renderGrid();
+                    renderPertanyaan();
+                    updateQuizUI();
+                };
+                container.appendChild(btn);
+            }
+        }
+
+        function updateQuizUI() {
+            document.getElementById('nomor-soal-teks').textContent = (currentIndex + 1);
+            
+            // Atur nama badge kategori
+            const type = dataSoal[currentIndex].type;
+            let badgeText = "Pilihan Ganda";
+            if(type==='pgk') badgeText = "Pilihan Ganda Kompleks";
+            if(type==='jodoh') badgeText = "Menjodohkan";
+            if(type==='isian') badgeText = "Isian Singkat";
+            if(type==='uraian') badgeText = "Uraian (HOTS)";
+            document.getElementById('tipe-soal-badge').textContent = badgeText;
+
+            // Tombol Nav
+            document.getElementById('btn-prev').disabled = currentIndex === 0;
+            const btnNext = document.getElementById('btn-next');
+            if(currentIndex === totalSoal - 1) {
+                btnNext.innerHTML = 'Selesai <i class="fas fa-check ms-2"></i>';
+                btnNext.classList.remove('btn-primary-custom');
+                btnNext.classList.add('btn-danger', 'fw-bold');
+                btnNext.style.backgroundColor = '#e74c3c';
+                btnNext.onclick = () => { simpanJawabanSementara(); konfirmasiSelesai(); };
+            } else {
+                btnNext.innerHTML = 'Selanjutnya <i class="fas fa-chevron-right ms-2"></i>';
+                btnNext.classList.add('btn-primary-custom');
+                btnNext.classList.remove('btn-danger', 'fw-bold');
+                btnNext.style.backgroundColor = 'var(--primary)';
+                btnNext.onclick = () => navigasiSoal(1);
+            }
+
+            // Progress Bar
+            let isiCount = hitungSoalTerisi();
+            let p = (isiCount / totalSoal) * 100;
+            document.getElementById('progress-bar-quiz').style.width = p + '%';
+        }
+
+        function updateGlobalProgress() {
+            let isiCount = hitungSoalTerisi();
+            let p = Math.round((isiCount / totalSoal) * 100);
+            document.getElementById('progress-text-menu').textContent = p;
+            document.getElementById('progress-bar-menu').style.width = p + '%';
+        }
+
+        function hitungSoalTerisi() {
+            let count = 0;
+            for(let i=0; i<totalSoal; i++) {
+                if(answers[i] !== undefined && answers[i] !== '') {
+                    if(dataSoal[i].type === 'pgk') {
+                        if(answers[i].length > 0) count++;
+                    } else if(dataSoal[i].type === 'jodoh') {
+                        let isFull = true;
+                        for(let j=0; j<dataSoal[i].items.length; j++) {
+                             if(!answers[i][j]) isFull = false;
+                        }
+                        if(isFull) count++;
+                    }
+                    else {
+                        count++;
+                    }
+                }
+            }
+            return count;
+        }
+
+        function navigasiSoal(arah) {
+            simpanJawabanSementara();
+            const newIndex = currentIndex + arah;
+            if(newIndex >= 0 && newIndex < totalSoal) {
+                currentIndex = newIndex;
+                renderGrid();
+                renderPertanyaan();
+                updateQuizUI();
+            }
+        }
+
+        function renderPertanyaan() {
+            const q = dataSoal[currentIndex];
+            const qCont = document.getElementById('pertanyaan-container');
+            const aCont = document.getElementById('jawaban-container');
+            
+            qCont.innerHTML = `<p class="fw-medium">${q.q}</p>`;
+            aCont.innerHTML = '';
+
+            let ans = answers[currentIndex];
+
+            if(q.type === 'pg') {
+                q.options.forEach((opt, idx) => {
+                    const checked = (ans === opt) ? 'checked' : '';
+                    aCont.innerHTML += `
+                        <div class="form-check custom-radio mb-3 p-3 rounded-3" style="background-color: var(--secondary); border: 1px solid var(--accent); transition:0.3s; cursor:pointer;" onclick="document.getElementById('opt${idx}').click()">
+                            <input class="form-check-input ms-2 mt-1" type="radio" name="pg-opt" id="opt${idx}" value="${opt}" ${checked} onclick="event.stopPropagation()">
+                            <label class="form-check-label ms-3 w-100" style="cursor:pointer;" for="opt${idx}">
+                                ${opt}
+                            </label>
+                        </div>
+                    `;
+                });
+            } 
+            else if(q.type === 'pgk') {
+                if(!ans) ans = [];
+                q.options.forEach((opt, idx) => {
+                    const checked = ans.includes(opt) ? 'checked' : '';
+                    aCont.innerHTML += `
+                        <div class="form-check mb-3 p-3 rounded-3" style="background-color: var(--secondary); border: 1px solid var(--accent); cursor:pointer;" onclick="document.getElementById('chk${idx}').click()">
+                            <input class="form-check-input ms-2 mt-1 chk-pgk" type="checkbox" id="chk${idx}" value="${opt}" ${checked} onclick="event.stopPropagation()">
+                            <label class="form-check-label ms-3 w-100" style="cursor:pointer;" for="chk${idx}">
+                                ${opt}
+                            </label>
+                        </div>
+                    `;
+                });
+            }
+            else if(q.type === 'jodoh') {
+                if(!ans) ans = {};
+                let html = '';
+                q.items.forEach((item, idx) => {
+                    let selOpts = `<option value="">-- Pilih Pasangan --</option>`;
+                    q.rightOptions.forEach(ropt => {
+                        let selected = (ans[idx] === ropt) ? 'selected' : '';
+                        selOpts += `<option value="${ropt}" ${selected}>${ropt}</option>`;
+                    });
+                    
+                    html += `
+                        <div class="matching-row">
+                            <div class="matching-label">${item.l}</div>
+                            <i class="fas fa-arrows-alt-h text-muted mx-2"></i>
+                            <select class="form-select form-select-custom matching-select sel-jodoh" data-idx="${idx}">
+                                ${selOpts}
+                            </select>
+                        </div>
+                    `;
+                });
+                aCont.innerHTML = html;
+            }
+            else if(q.type === 'isian') {
+                aCont.innerHTML = `
+                    <input type="text" class="form-control form-control-custom w-100" id="input-isian" placeholder="Ketik jawaban singkat di sini..." value="${ans || ''}" autocomplete="off">
+                `;
+            }
+            else if(q.type === 'uraian') {
+                aCont.innerHTML = `
+                    <textarea class="form-control form-control-custom w-100" id="input-uraian" rows="6" placeholder="Tuliskan penjelasan dan argumenmu di sini...">${ans || ''}</textarea>
+                `;
+            }
+        }
+
+        function simpanJawabanSementara() {
+            const q = dataSoal[currentIndex];
+            if(!q) return;
+
+            if(q.type === 'pg') {
+                const el = document.querySelector('input[name="pg-opt"]:checked');
+                if(el) answers[currentIndex] = el.value;
+            } 
+            else if(q.type === 'pgk') {
+                const els = document.querySelectorAll('.chk-pgk:checked');
+                let arr = [];
+                els.forEach(el => arr.push(el.value));
+                answers[currentIndex] = arr;
+            }
+            else if(q.type === 'jodoh') {
+                const selects = document.querySelectorAll('.sel-jodoh');
+                let obj = answers[currentIndex] || {};
+                selects.forEach(sel => {
+                    const idx = sel.getAttribute('data-idx');
+                    obj[idx] = sel.value;
+                });
+                answers[currentIndex] = obj;
+            }
+            else if(q.type === 'isian') {
+                const val = document.getElementById('input-isian').value;
+                answers[currentIndex] = val;
+            }
+            else if(q.type === 'uraian') {
+                const val = document.getElementById('input-uraian').value;
+                answers[currentIndex] = val;
+            }
+        }
+
+        function konfirmasiSelesai() {
+            let isiCount = hitungSoalTerisi();
+            let pesan = `Kamu sudah menjawab ${isiCount} dari ${totalSoal} soal.`;
+            if(isiCount < totalSoal) {
+                pesan += `<br><br><span class="text-danger fw-bold">Masih ada soal yang belum dijawab!</span>`;
+            }
+            pesan += "<br><br>Yakin ingin mengakhiri ujian dan melihat hasil?";
+            
+            showCustomAlert("Konfirmasi Selesai", pesan, true, () => {
+                selesaikanUjian();
+            });
+        }
+
+        function kalkulasiNilai() {
+            // Bobot maksimal:
+            // PG: 20 * 2 = 40
+            // PGK: 5 * 3 = 15
+            // Jodoh: 5 * 2 = 10 (per item jodoh 2/3 gitu, anggap per soal jodoh bener semua dpt 2)
+            // Isian: 10 * 2 = 20
+            // Uraian: 5 * 3 = 15 (dummy grading: isi > 20 char dpt 3, >10 dpt 2, <10 dpt 1, kosong 0)
+            // Total = 100.
+            
+            let skorTotal = 0;
+
+            for(let i=0; i<totalSoal; i++) {
+                const q = dataSoal[i];
+                let ans = answers[i];
+
+                if(q.type === 'pg') {
+                    if(ans === q.answer) skorTotal += 2;
+                }
+                else if(q.type === 'pgk') {
+                    if(ans && Array.isArray(ans)) {
+                        // cek array isi dan length sama
+                        let bener = true;
+                        if(ans.length !== q.answer.length) bener = false;
+                        else {
+                            ans.forEach(a => {
+                                if(!q.answer.includes(a)) bener = false;
+                            });
+                        }
+                        if(bener) skorTotal += 3;
+                    }
+                }
+                else if(q.type === 'jodoh') {
+                    if(ans) {
+                        let jmlItem = q.items.length;
+                        let benerCount = 0;
+                        q.items.forEach((item, idx) => {
+                            if(ans[idx] === item.r) benerCount++;
+                        });
+                        if(benerCount === jmlItem) skorTotal += 2;
+                        else if(benerCount > 0) skorTotal += 1; // partial point
+                    }
+                }
+                else if(q.type === 'isian') {
+                    if(ans && ans.trim().toLowerCase() === q.answer) skorTotal += 2;
+                }
+                else if(q.type === 'uraian') {
+                    if(ans && ans.trim().length > 20) skorTotal += 3;
+                    else if(ans && ans.trim().length > 10) skorTotal += 2;
+                    else if(ans && ans.trim().length > 0) skorTotal += 1;
+                }
+            }
+            return skorTotal;
+        }
+
+        function dapatkanPredikat(nilai) {
+            if(nilai >= 90) return { teks: "SANGAT BAIK", warna: "#2ecc71" }; // Hijau
+            if(nilai >= 80) return { teks: "BAIK", warna: "#3498db" }; // Biru
+            if(nilai >= 70) return { teks: "CUKUP", warna: "#f39c12" }; // Orange
+            return { teks: "PERLU BIMBINGAN", warna: "#e74c3c" }; // Merah
+        }
+
+        function selesaikanUjian() {
+            clearInterval(timerInterval);
+            document.getElementById('timer-display').classList.add('section-hidden');
+            
+            const nilaiAkhir = kalkulasiNilai();
+            const predikat = dapatkanPredikat(nilaiAkhir);
+
+            // Set Data Sertifikat
+            document.getElementById('cert-nama').textContent = userData.nama.toUpperCase();
+            document.getElementById('cert-kelas').textContent = userData.kelas;
+            document.getElementById('cert-nilai').textContent = nilaiAkhir;
+            
+            const badgePred = document.getElementById('cert-predikat');
+            badgePred.textContent = predikat.teks;
+            badgePred.style.backgroundColor = predikat.warna;
+
+            // Set Tanggal saat ini ke tanggal indo
+            const now = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('cert-tanggal').textContent = now.toLocaleDateString('id-ID', options);
+
+            switchSection('section-sertifikat');
+            
+            // Lempar kembang api (opsional UX)
+            setTimeout(() => showCustomAlert("Selamat!", `Ujian Selesai. Nilai kamu: ${nilaiAkhir} (${predikat.teks})`), 500);
+        }
+
+        function downloadRekap() {
+            let txt = `REKAPITULASI JAWABAN UJIAN\n`;
+            txt += `Materi: Perencanaan dan Pengembangan Sistem Komputer\n`;
+            txt += `Nama  : ${userData.nama}\n`;
+            txt += `Kelas : ${userData.kelas}\n`;
+            txt += `Waktu : ${new Date().toLocaleString('id-ID')}\n`;
+            txt += `====================================================\n\n`;
+
+            for(let i=0; i<totalSoal; i++) {
+                const q = dataSoal[i];
+                let ans = answers[i];
+                txt += `Soal ${i+1} [${q.kategori.toUpperCase()}]: ${q.q}\n`;
+                
+                let ansText = "Kosong";
+                if(ans !== undefined && ans !== '') {
+                    if(q.type === 'pgk') {
+                        ansText = ans.join(', ');
+                    } else if(q.type === 'jodoh') {
+                        ansText = "";
+                        q.items.forEach((it, idx) => {
+                            ansText += `\n  - ${it.l} = ${ans[idx] || 'Kosong'}`;
+                        });
+                    } else {
+                        ansText = ans;
+                    }
+                }
+                
+                txt += `Jawaban Siswa: ${ansText}\n\n`;
+            }
+
+            const blob = new Blob([txt], { type: "text/plain;charset=utf-8" });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = `Rekap_Jawaban_${userData.nama.replace(/\s+/g, '_')}.txt`;
+            link.click();
+        }
+
+    </script>
+</body>
+</html>
